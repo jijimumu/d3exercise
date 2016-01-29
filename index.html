@@ -265,9 +265,22 @@
         link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
     });
 
+    var relation = [];
+
     items.forEach(function(item) {
         nodes2[item.node] = {name: item.node};
+        for(var i=0;i<item.target.length;i++){
+            var target = nodes2[item.target[i]] || (nodes2[item.target[i]] = {name: item.target[i].node});
+            relation.push({
+                source: nodes2[item.node],
+                target: target,
+                type: item.target[i].type
+            });
+        }
     });
+
+//    console.log(relation);
+    console.log(links);
 
 
     var keys = Object.keys(nodes);
@@ -280,23 +293,14 @@
 
 
     console.log(nodes);
-    console.log(nodes2);
+//    console.log(nodes2);
 
 
     var width = 1200,
             height = 1200;
 
     var force = d3.layout.force()
-            .nodes(d3.values(
-                {
-                    "Amazon":{
-                        name: 'Amazon'
-                    },
-                    "Microsoft":{
-                        name: 'Microsoft'
-                    }
-                }
-            ))
+            .nodes(d3.values(nodes))
             .links(links)
             .size([width, height])
             .linkDistance(250)
@@ -304,7 +308,7 @@
             .on("tick", tick)
             .start();
 
-    console.log(force);
+//    console.log(force);
             //.start();
 //
 //
