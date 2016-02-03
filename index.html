@@ -21,7 +21,7 @@
     }
 
     circle {
-        fill: #ccc;
+        fill: #fff;
         stroke: #333;
         stroke-width: 10px;
     }
@@ -34,10 +34,18 @@
 
 </style>
 <body>
-<script src="http://d3js.org/d3.v3.min.js"></script>
+<script src="d3.v3.min.js"></script>
 <script>
-
     var items = [
+        {
+            node: 'Amazon',
+            target: [
+                {
+                    node: 'Google',
+                    type: 'suit'
+                }
+            ]
+        },
         {
             node: 'Microsoft',
             target: [
@@ -48,135 +56,11 @@
                 {
                     node: 'HTC',
                     type: 'licensing'
-                },
-                {
-                    node: 'Barnes & Noble',
-                    type: 'suit'
-                },
-                {
-                    node: 'Foxconn',
-                    type: 'suit'
-                },
-                {
-                    node: 'Inventec',
-                    type: 'suit'
-                },
-                {
-                    node: 'Motorola',
-                    type: 'suit'
                 }
             ]
         },
         {
-            node: 'Amazon',
-            target: []
-        },
-        {
-            node: 'HTC',
-            target: [
-                {
-                    node: 'Apple',
-                    type: 'suit'
-                }
-            ]
-        },
-        {
-            node: 'Samsung',
-            target: [
-                {
-                    node: 'Apple',
-                    type: 'suit'
-                },
-                {
-                    node: 'Kodak',
-                    type: 'resolved'
-                }
-            ]
-        },
-        {
-            node: 'Apple',
-            target: [
-                {
-                    node: 'HTC',
-                    type: 'suit'
-                },
-                {
-                    node: 'Nokia',
-                    type: 'resolved'
-                },
-                {
-                    node: 'Motorola',
-                    type: 'suit'
-                },
-                {
-                    node: 'Samsung',
-                    type: 'suit'
-                }
-            ]
-        },
-        {
-            node: 'Motorola',
-            target: [
-                {
-                    node: 'Apple',
-                    type: 'suit'
-                }
-            ]
-        },
-        {
-            node: 'Nokia',
-            target: [
-                {
-                    node: 'Apple',
-                    type: 'resolved'
-                },
-                {
-                    node: 'Qualcomm',
-                    type: 'suit'
-                }
-            ]
-        },
-        {
-            node: 'Kodak',
-            target: [
-                {
-                    node: 'Apple',
-                    type: 'suit'
-                },
-                {
-                    node: 'LG',
-                    type: 'resolved'
-                },
-                {
-                    node: 'Samsung',
-                    type: 'resolved'
-                },
-                {
-                    node: 'RIM',
-                    type: 'suit'
-                }
-            ]
-        },
-        {
-            node: 'Oracle',
-            target: [
-                {
-                    node: 'Google',
-                    type: 'suit'
-                }
-            ]
-        },
-        {
-            node: 'LG',
-            target: [
-                {
-                    node: 'Kodak',
-                    type: 'resolved'
-                }
-            ]
-        },
-        {
-            node: 'RIM',
+            node: 'Foxconn',
             target: [
                 {
                     node: 'Kodak',
@@ -195,37 +79,40 @@
         },
         {
             node: 'Qualcomm',
+            target: []
+        },
+        {
+            node: 'Amazon',
+            target: []
+        },
+        {
+            node: 'HTC',
             target: [
                 {
-                    node: 'Nokia',
+                    node: 'Apple',
+                    type: 'suit'
+                }
+            ]
+        },
+        {
+            node: 'Samsung',
+            target: [
+                {
+                    node: 'Kodak',
                     type: 'resolved'
                 }
             ]
         },
         {
-            node: 'Motorola',
+            node: 'Apple',
             target: [
                 {
-                    node: 'Microsoft',
+                    node: 'HTC',
                     type: 'suit'
-                }
-            ]
-        },
-        {
-            node: 'Huawei',
-            target: [
+                },
                 {
-                    node: 'ZTE',
-                    type: 'suit'
-                }
-            ]
-        },
-        {
-            node: 'Ericsson',
-            target: [
-                {
-                    node: 'ZTE',
-                    type: 'suit'
+                    node: 'Nokia',
+                    type: 'resolved'
                 }
             ]
         },
@@ -248,6 +135,24 @@
         {
             node: 'ZTE',
             target: []
+        },
+        {
+            node: 'Huawei',
+            target: [
+                {
+                    node: 'ZTE',
+                    type: 'suit'
+                }
+            ]
+        },
+        {
+            node: 'Ericsson',
+            target: [
+                {
+                    node: 'ZTE',
+                    type: 'suit'
+                }
+            ]
         }
     ];
 
@@ -268,9 +173,14 @@
     var relation = [];
 
     items.forEach(function(item) {
-        nodes2[item.node] = {name: item.node};
+
+        if(!nodes2[item.node]){
+            nodes2[item.node] = {name: item.node};
+        }
+
+
         for(var i=0;i<item.target.length;i++){
-            var target = nodes2[item.target[i]] || (nodes2[item.target[i]] = {name: item.target[i].node});
+            var target = nodes2[item.target[i].node] || (nodes2[item.target[i].node] = {name: item.target[i].node});
             relation.push({
                 source: nodes2[item.node],
                 target: target,
@@ -279,8 +189,10 @@
         }
     });
 
+//    console.log('relation');
 //    console.log(relation);
-    console.log(links);
+//    console.log('links');
+//    console.log(links);
 
 
     var keys = Object.keys(nodes);
@@ -291,8 +203,11 @@
         }
     }
 
-
-    console.log(nodes);
+//    //nodes
+//    console.log('nodes');
+//    console.log(nodes);
+//    //nodes2
+//    console.log('nodes2');
 //    console.log(nodes2);
 
 
@@ -300,86 +215,120 @@
             height = 1200;
 
     var force = d3.layout.force()
-            .nodes(d3.values(nodes))
-            .links(links)
+            .nodes(d3.values(nodes2))
+            .links(relation)
             .size([width, height])
-            .linkDistance(250)
+            .linkDistance(150)
             .charge(-1200)
             .on("tick", tick)
             .start();
 
-//    console.log(force);
-            //.start();
-//
-//
-//    var svg = d3.select("body").append("svg")
-//            .attr("width", width)
-//            .attr("height", height);
-//
-//    // Per-type markers, as they don't inherit styles.
-//    svg.append("defs").selectAll("marker")
-//            .data(["suit", "licensing", "resolved"])
-//            .enter().append("marker")
-//            .attr("id", function(d) { return d; })
-//            .attr("viewBox", "0 -5 10 10")
-//            .attr("refX", 65)
-//            .attr("refY", 0)
-//            .attr("markerWidth", 6)
-//            .attr("markerHeight", 6)
-//            .attr("orient", "auto")
-//            .append("path")
-//            .attr("d", "M0,-5L10,0L0,5");
-//
-//    var path = svg.append("g").selectAll("path")
-//            .data(force.links())
-//            .enter().append("path")
-//            .attr("class", function(d) { return "link " + d.type; })
-//            .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
-//
-//    var circle = svg.append("g").selectAll("circle")
-//            .data(force.nodes())
-//            .enter().append("circle")
-//            .attr("r", 45)
-//            .call(force.drag);
-//
-//    var text = svg.append("g").selectAll("text")
-//            .data(force.nodes())
-//            .enter().append("text")
-//            .attr("x", 8)
-//            .attr("y", ".31em")
-//            .text(function(d) { return d.name; });
-//
+
+
+    var svg = d3.select("body").append("svg")
+            .attr("width", width)
+            .attr("height", height);
+
+    // Per-type markers, as they don't inherit styles.
+    svg.append("defs").selectAll("marker")
+            .data(["suit", "licensing", "resolved"])
+            .enter().append("marker")
+            .attr("id", function(d) { return d; })
+            .attr("viewBox", "0 -5 10 10")
+            .attr("refX", 65)
+            .attr("refY", 0)
+            .attr("markerWidth", 6)
+            .attr("markerHeight", 6)
+            .attr("orient", "auto")
+            .append("path")
+            .attr("d", "M0,-5L10,0L0,5");
+
+    var path = svg.append("g").selectAll("path")
+            .data(force.links())
+            .enter().append("path")
+            .attr("class", function(d) { return "link " + d.type; })
+            .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
+
+    var circle = svg.append("g").selectAll("circle")
+            .data(force.nodes())
+            .enter().append("circle")
+            .attr("r", 45)
+            .on('mouseover',function(target){
+//                console.log('in');
+                d3.select(this).transition().duration(250).attr('r', 60);
+            })
+            .on('mouseleave',function(target){
+//                console.log('in');
+                d3.select(this).transition().duration(250).attr('r', 45);
+            })
+            .call(force.drag);
+
+    var text = svg.append("g").selectAll("text")
+            .data(force.nodes())
+            .enter().append("text")
+            .attr("x", 0)
+            .attr("y", ".31em")
+            .text(function(d) { return d.name; });
+
     // Use elliptical arc path segments to doubly-encode directionality.
-    function tick() {
+    function tick(e) {
+
         path.attr("d", linkArc);
-        circle.attr("transform", transform);
+
         text.attr("transform", transform);
+
+        path.attr("d", linkArc);
+
+        // Push different nodes in different directions for clustering.
+        var k = 15 * e.alpha;
+
+        d3.values(nodes2).forEach(function(o, i) {
+            o.y += i & 1 ? k : -k;
+            o.x += i & 2 ? k : -k;
+        });
+
+        circle.attr("cx", function(d) { return d.x; })
+              .attr("cy", function(d) { return d.y; });
     }
-//
+
+    function linkArc(d) {
+        var dx = d.target.x - d.source.x,
+                dy = d.target.y - d.source.y,
+                dr = Math.sqrt(dx * dx + dy * dy);
+
+        var startX = d.source.x + ((d.target.x - d.source.x)/6);
+        var endX = d.source.x + ((d.target.x - d.source.x)*5/6);
+        var startY = d.source.y + ((d.target.y - d.source.y)/6);
+        var endY = d.source.y + ((d.target.y - d.source.y)*5/6);
+
+
+        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + ' ' + d.target.y;
+    }
+
+    group();
+
+
+    function group(){
+        console.log(relation);
+
+        doneIndex = [];
+
+        for(var i=0; i<relation.length; i++){
+
+        }
+
+    }
+
+
 //    function linkArc(d) {
 //        var dx = d.target.x - d.source.x,
 //                dy = d.target.y - d.source.y,
 //                dr = Math.sqrt(dx * dx + dy * dy);
-//
-//        var startX = d.source.x + ((d.target.x - d.source.x)/6);
-//        var endX = d.source.x + ((d.target.x - d.source.x)*5/6);
-//        var startY = d.source.y + ((d.target.y - d.source.y)/6);
-//        var endY = d.source.y + ((d.target.y - d.source.y)*5/6);
-//
-//
-//        return "M" + d.source.x + "," + d.source.y + "L" + d.target.x + ' ' + d.target.y;
+//        return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,0" + d.target.x + "," + d.target.y;
 //    }
-//
-//
-////    function linkArc(d) {
-////        var dx = d.target.x - d.source.x,
-////                dy = d.target.y - d.source.y,
-////                dr = Math.sqrt(dx * dx + dy * dy);
-////        return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,0" + d.target.x + "," + d.target.y;
-////    }
-//
-//    function transform(d) {
-//        return "translate(" + d.x + "," + d.y + ")";
-//    }
+
+    function transform(d) {
+        return "translate(" + (d.x - (d.name.length/2 * 6)) + "," + d.y + ")";
+    }
 
 </script>
